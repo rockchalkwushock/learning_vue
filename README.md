@@ -143,3 +143,90 @@ watch: {
   }
 }
 ```
+
+## Templates
+
+Vue.js uses HTML-based template syntax to bind the Vue instance to the DOM, very useful for components.
+
+Templates are optional, you can also write render functions with option JSX support.
+
+## Components
+
+A collection fo elements that are encapsulated into a group that can be accessed through one single element.
+
+```javascript
+Vue.component('child', {
+  template: `<div>hello vue</div>`
+})
+
+new Vue({
+  el: '#app'
+})
+```
+
+```html
+<div id="app">
+  <child></child>
+</div>
+```
+
+### With props
+
+```javascript
+Vue.component('child', {
+  props: ['text'],
+  template: `<div>Hello {{ text }}!</div>`
+})
+
+new Vue({
+  el: '#app',
+  data() {
+    return {
+      message: 'Vue'
+    }
+  }
+})
+```
+
+```html
+<div id="app">
+  <child :text="message"></child>
+</div>
+```
+
+### With props validation
+
+```javascript
+Vue.component('child', {
+  props: {
+    text: [String, Number],
+    otherText: {
+      type: String,
+      required: true,
+      default: 'Hello Vue!'
+    },
+    someOtherText: {
+      // NOTE
+      // Objects & Arrays must be returned from functions.
+      type: Object,
+      default: function() {
+        return { message: 'Pizza!' }
+      }
+    }
+  },
+  template: `<div>Hello {{ text }}!</div>`
+})
+
+new Vue({
+  el: '#app',
+  data() {
+    return {
+      message: 'Vue'
+    }
+  }
+})
+```
+
+Not using the state of the parent `<child count="1"></child>` vs using the state of the parent `<child :count="count"></child>`. We use `v-bind` or `:` to dynamically bind props to data on the parent.
+
+Each component has isolated scope so we must return data as a function.
