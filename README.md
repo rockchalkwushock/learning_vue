@@ -78,3 +78,68 @@ new Vue({
   <h2 v-if="userData">Computed value: {{ greeting }}</h2>
 </div>
 ```
+
+## Watchers
+
+Good for asynchronous updates, and updates/transitions with data changes.
+
+### What is Reactive?
+
+Reactive programming is programming with asynchronous data streams.
+
+A **stream** is a sequence of ongoing events ordered in time that offer some hooks with which to observe it.
+
+When we use reactive premises for building applications, this means it's very easy to update state in reaction to events.
+
+> Vue cannot detect property addition or deletion so we create the `data` object to keep track.
+
+1.  Each component has a watcher instance.
+2.  The properties touched by the watcher during the render are registered as dependencies.
+3.  When the setter is triggered, it lets the watcher know, and causes the component to re-render.
+
+```javascript
+new Vue({
+  el: '#app',
+  data() {
+    return {
+      counter: 0
+    }
+  },
+  watch: {
+    // NOTE:
+    // This has to match the data property we are watching!
+    counter() {
+      console.log('The counter has changed!')
+    }
+  }
+})
+```
+
+```html
+<div id="app">
+  <input type="number" v-model.number="counter"></input>
+</div>
+```
+
+I have access to the new and old value with watchers
+
+```javascript
+watch: {
+  watchedProperty(value, oldValue) {
+    // ...
+  }
+}
+```
+
+Can also go deep!
+
+```javascript
+watch: {
+  watchedProperty: {
+    deep: true,
+    nestedWatchedProperty(value, oldValue) {
+      // ...
+    }
+  }
+}
+```
